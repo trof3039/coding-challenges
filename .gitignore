@@ -1,0 +1,6 @@
+node_modules/
+.vscode/
+trash/
+lvl1/sql-tests.js
+
+package-lock.json
