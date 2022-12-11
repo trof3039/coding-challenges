@@ -7,20 +7,11 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "eval-math-expr",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/evaluate-math-expression.js"
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
             "name": "main",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/lvl2/maze-solver.js"
+            "program": "${workspaceFolder}/lvl1/sql-tests.js"
         }
     ]
 }
