@@ -29,7 +29,6 @@ const query = () => {
             if (!this.fromJoinData) this.whereConditions.push(conditionFns)
             else this.whereJoinConditions.push(conditionFns)
         }
-        
         return this
     }
     this.groupBy = (...groupByFns) => {
@@ -37,7 +36,6 @@ const query = () => {
             this.groupByConditions = groupByFns || null
             return this
         }
-
         throw new Error('Duplicate GROUPBY')
     }
     this.orderBy = compareFn => {
