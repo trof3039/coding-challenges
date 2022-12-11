@@ -52,54 +52,53 @@ const query = () => {
         return this
     }
 
-    this.execute = () => {
-        const isItemValid = (item, conditions) => !conditions.length ? true : conditions.reduce(
-            (acc, fnArr) => {
-                if (!acc) return false
+    const isItemValid = (item, conditions) => !conditions.length ? true : conditions.reduce(
+        (acc, fnArr) => {
+            if (!acc) return false
 
-                return fnArr.reduce(
-                    (res, fn) => {
-                        if (res) return true
-        
-                        return fn(item)
-                    }, false
-                )
-            }
-            , true
-        )
-        const getWhereData = (from, where) => from.length === 1 
-            ? from[0].filter(item => isItemValid(item, where))
-            : from[0].reduce(
-                    (acc, firstTableItem) => {
-                        const validSecondTableItems = from[1].filter(item => isItemValid([firstTableItem, item], where))
-                        if (validSecondTableItems) validSecondTableItems.forEach(item => acc.push([firstTableItem, item]))
-                        return acc
-                    }, []
-                )
-        
-        const getGroupByData = (whereData, fnArr) => {
-            const flatGroupBy = (flatArr, groupByFn) => {
-                const groupByData = []
-                flatArr.forEach(item => {
-                    const groupByKey = groupByFn(item)
-                    const group = groupByData.find(group => group[0] === groupByKey)
-                    if (group) group[1].push(item)
-                    else groupByData.push([groupByKey, [item]])
-                })
-                return groupByData
-            }
-            const deepGroupBy = (data, groupByFn, fnIndex, counter = 1) => {
-                if (fnIndex === 0) return flatGroupBy(data, groupByFn)
-                if (fnIndex === counter) return data.map(group => [group[0], flatGroupBy(group[1], groupByFn)])
-                return data.map(deeperData => [deeperData[0], deepGroupBy(deeperData[1], groupByFn, fnIndex, counter + 1)])
-            }
-
-            return fnArr.reduce((acc, fn, index) => deepGroupBy(!acc ? whereData : acc, fn, index), null)
+            return fnArr.reduce(
+                (res, fn) => {
+                    if (res) return true
+    
+                    return fn(item)
+                }, false
+            )
         }
-        const getHavingData = (data, having) => data.filter(item => having.length ? isItemValid(item, having) : true)
-        const getSelectData = (data, select) => data.map(item => select(item))
-        const getOrderByData = (data, orderBy) => data.sort(orderBy)
+        , true
+    )
+    const getWhereData = (from, where) => from.length === 1 
+        ? from[0].filter(item => isItemValid(item, where))
+        : from[0].reduce(
+                (acc, firstTableItem) => {
+                    from[1].forEach(item => isItemValid([firstTableItem, item], where) && acc.push([firstTableItem, item]))
+                    return acc
+                }, []
+            )
+    
+    const getGroupByData = (whereData, fnArr) => {
+        const flatGroupBy = (flatArr, groupByFn) => {
+            const groupByData = []
+            flatArr.forEach(item => {
+                const groupByKey = groupByFn(item)
+                const group = groupByData.find(group => group[0] === groupByKey)
+                if (group) group[1].push(item)
+                else groupByData.push([groupByKey, [item]])
+            })
+            return groupByData
+        }
+        const deepGroupBy = (data, groupByFn, fnIndex, counter = 1) => {
+            if (fnIndex === 0) return flatGroupBy(data, groupByFn)
+            if (fnIndex === counter) return data.map(group => [group[0], flatGroupBy(group[1], groupByFn)])
+            return data.map(deeperData => [deeperData[0], deepGroupBy(deeperData[1], groupByFn, fnIndex, counter + 1)])
+        }
 
+        return fnArr.reduce((acc, fn, index) => deepGroupBy(!acc ? whereData : acc, fn, index), null)
+    }
+    const getHavingData = (data, having) => data.filter(item => having.length ? isItemValid(item, having) : true)
+    const getSelectData = (data, select) => data.map(item => select(item))
+    const getOrderByData = (data, orderBy) => data.sort(orderBy)
+
+    this.execute = () => {
         const { fromData, fromJoinData, whereConditions, whereJoinConditions } = this
         if ((!fromData || !fromData.length) && (!fromJoinData || !fromJoinData.length)) return []
 
@@ -107,11 +106,8 @@ const query = () => {
         const groupByData = this.groupByConditions ? getGroupByData(whereData, this.groupByConditions) : whereData
         const havingData = this.havingConditions ? getHavingData(groupByData, this.havingConditions) : groupByData
         const selectData = this.selectFn ? getSelectData(havingData, this.selectFn) : havingData
-        const finalData = this.orderByFn ? getOrderByData(selectData, this.orderByFn) : selectData
-
-        return finalData
+        return this.orderByFn ? getOrderByData(selectData, this.orderByFn) : selectData
     }
-
     return this
 }
 
