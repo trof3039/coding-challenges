@@ -72,7 +72,6 @@ const query = () => {
                     return acc
                 }, []
             )
-    
     const getGroupByData = (whereData, fnArr) => {
         const flatGroupBy = (flatArr, groupByFn) => {
             const groupByData = []
@@ -84,13 +83,11 @@ const query = () => {
             })
             return groupByData
         }
-        const deepGroupBy = (data, groupByFn, fnIndex, counter = 1) => {
-            if (fnIndex === 0) return flatGroupBy(data, groupByFn)
-            if (fnIndex === counter) return data.map(group => [group[0], flatGroupBy(group[1], groupByFn)])
-            return data.map(deeperData => [deeperData[0], deepGroupBy(deeperData[1], groupByFn, fnIndex, counter + 1)])
-        }
+        const deepGroupBy = (data, groupByFn, fnIndex, counter = 1) => fnIndex === 0 ? flatGroupBy(data, groupByFn) 
+            : fnIndex === counter ? data.map(group => [group[0], flatGroupBy(group[1], groupByFn)])
+            : data.map(deeperData => [deeperData[0], deepGroupBy(deeperData[1], groupByFn, fnIndex, counter + 1)])
 
-        return fnArr.reduce((acc, fn, index) => deepGroupBy(!acc ? whereData : acc, fn, index), null)
+        return fnArr.reduce((acc, fn, index) => deepGroupBy(acc || whereData, fn, index), null)
     }
     const getHavingData = (data, having) => data.filter(item => having.length ? isItemValid(item, having) : true)
     const getSelectData = (data, select) => data.map(item => select(item))
