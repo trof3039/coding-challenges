@@ -48,7 +48,7 @@ const maxArea = (height = []) => {
     return globalMax
 }
 
-// also slow solution
+// even slower solution
 // Runtime
 // 187 ms
 // Beats
