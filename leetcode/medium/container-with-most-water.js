@@ -132,6 +132,42 @@ const maxArea2 = (height = []) => {
 }
 
 
+// one more slow solution
+// Runtime
+// 379 ms
+// Beats
+// 5.94%
+// Memory
+// 55.3 MB
+// Beats
+// 5%
+const maxArea3 = (height = []) => { 
+    const listL = height.reduce((acc, h, i) => {
+        if (acc.length && acc[acc.length - 1][0] >= h) return acc
+        return [...acc, [h, i]]
+    }, [])
+    const lastL = listL[listL.length - 1]
+    const listR = []
+    for (let i = height.length - 1; i >= 0; i--) {
+        const h = height[i]
+        if (!listR.length || h > listR[listR.length - 1][0] || h === lastL[0]) listR.push([h, i])
+        if (h === lastL[0]) break
+    }
+
+    const maxL =  listL.reduce((acc, el) => {
+        const higherRight = listR.find(e => e[0] >= el[0])
+        const max = higherRight ? (higherRight[1] - el[1]) * el[0] : 0
+        return Math.max(acc, max)
+    }, 0)
+
+    const maxR =  listR.reduce((acc, el) => {
+        const higherLeft = listL.find(e => e[0] >= el[0])
+        const max = higherLeft ? (el[1] - higherLeft[1]) * el[0] : 0
+        return Math.max(acc, max)
+    }, 0)
+
+    return Math.max(maxL, maxR)
+}
 
 console.log(maxArea(height))
 console.log(maxArea(height2))
