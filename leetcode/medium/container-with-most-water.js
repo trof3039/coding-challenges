@@ -15,7 +15,7 @@ const height6 = [1,0,0,0,0,0,0,2,2]
 // Memory
 // 52.6 MB
 // Beats
-// 5.15%
+// 5.66%
 const maxArea = (height = []) => {
     let l = [height[0], 0], r = [height[height.length - 1], height.length - 1]
     let il = 1, ir = height.length - 2
@@ -33,7 +33,7 @@ const maxArea = (height = []) => {
         }
         
         if (r[0] >= hil && l[0] < hil) {
-            if (r[0] === hil || hil/l[0] > ((r[1] - l[1]) / (r[1] - il))) {
+            if (hil/l[0] > ((r[1] - l[1]) / (r[1] - il))) {
                 max = Math.max(max, hil * (r[1] - il))
                 l = [hil, il]
             }
@@ -42,7 +42,7 @@ const maxArea = (height = []) => {
         }
 
         if (l[0] >= hir && r[0] < hir) {
-            if (hir/r[0] > ((r[1] - l[1]) / (ir - l[1])) || l[0] === hil) {
+            if (hir/r[0] > ((r[1] - l[1]) / (ir - l[1]))) {
                 max = Math.max(max, hir * (ir - l[1]))
                 r = [hir, ir]
             }
@@ -84,10 +84,9 @@ const maxArea = (height = []) => {
 }
 
 
-// solve the problem, but get timeout error on large numbers
+// it solves the problem, but isn't valid solution because gets timeout error on large numbers
 const maxArea1 = h => h.reduce((acc, h1, i1) => 
-    Math.max(acc, h.reduce((a, h2, i2) => 
-        Math.max(a, i1 === i2 ? acc : Math.min(h1, h2) * Math.abs(i2 - i1)), 0)), 0)
+    Math.max(acc, h.reduce((a, h2, i2) => Math.max(a, i1 === i2 ? acc : Math.min(h1, h2) * Math.abs(i2 - i1)), 0)), 0)
 
 
 // slow solution 
