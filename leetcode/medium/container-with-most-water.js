@@ -27,23 +27,22 @@ const maxArea = (height = []) => {
         const hil = height[il]
         const hir = height[ir]
 
-        if (hil < l[0] && hir < r[0]) {
+        if (hil <= l[0] && hir <= r[0]) {
             il++, ir--
             continue
         }
         
         if (r[0] >= hil && l[0] < hil) {
             if (hil/l[0] > ((r[1] - l[1]) / (r[1] - il))) {
-                max = Math.max(max, hil * (r[1] - il))
+                max = Math.max(max, hil * (r[1] - il)) // looks like { hil * (r[1] - il) > max } always true
                 l = [hil, il]
             }
             il++
             continue
         }
-
         if (l[0] >= hir && r[0] < hir) {
             if (hir/r[0] > ((r[1] - l[1]) / (ir - l[1]))) {
-                max = Math.max(max, hir * (ir - l[1]))
+                max = Math.max(max, hir * (ir - l[1])) // same { hir * (ir - l[1]) > max }
                 r = [hir, ir]
             }
             ir--
