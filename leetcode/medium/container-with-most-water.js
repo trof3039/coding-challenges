@@ -73,8 +73,6 @@ const maxArea = (height = []) => {
                 il++
             }
         }
-
-        continue
     }
 }
 
