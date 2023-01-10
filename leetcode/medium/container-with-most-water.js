@@ -6,8 +6,83 @@ const height3 = [4,3,2,1,4]
 const height4 = [0,2]
 const height5 = [1,2,4,3]
 const height6 = [1,0,0,0,0,0,0,2,2]
-const height7 = [4,4,2,11,0,11,5,11,13,8]
-const height8 = [8,20,1,2,3,4,5,6]
+
+// my fastest solution with difficulty O(n)
+// Runtime
+// 90 ms
+// Beats
+// 67.91%
+// Memory
+// 52.6 MB
+// Beats
+// 5.15%
+const maxArea = (height = []) => {
+    let l = [height[0], 0], r = [height[height.length - 1], height.length - 1]
+    let il = 1, ir = height.length - 2
+    let max = Math.min(r[0], l[0]) * (r[1] - l[1])
+
+    while (true) {
+        if (il > ir) return max
+        
+        const hil = height[il]
+        const hir = height[ir]
+
+        if (hil < l[0] && hir < r[0]) {
+            il++, ir--
+            continue
+        }
+        
+        if (r[0] >= hil && l[0] < hil) {
+            if (r[0] === hil || hil/l[0] > ((r[1] - l[1]) / (r[1] - il))) {
+                max = Math.max(max, hil * (r[1] - il))
+                l = [hil, il]
+            }
+            il++
+            continue
+        }
+
+        if (l[0] >= hir && r[0] < hir) {
+            if (hir/r[0] > ((r[1] - l[1]) / (ir - l[1])) || l[0] === hil) {
+                max = Math.max(max, hir * (ir - l[1]))
+                r = [hir, ir]
+            }
+            ir--
+            continue
+        }
+        
+        if (l[0] < r[0]) {
+            if (l[0] < hil) {
+                max = Math.max(max, r[0] * (r[1] - il), l[0] * (il - l[1]))
+                l = [hil, il]
+            }
+            il++
+            continue
+        }
+
+        if (l[0] > r[0]) {
+            if (r[0] < hir) {
+                max = Math.max(max, l[0] * (ir - l[1]), r[0] * (r[1] - ir))
+                r = [hir, ir]
+            }
+            ir--
+            continue
+        }
+
+        if (l[0] === r[0]) {
+            if (hil === hir) max = Math.max(max, hil * (ir - il))
+            if (hil >= hir) {
+                if (hir > r[0]) r = [hir, ir]
+                ir--
+            }
+            if (hil <= hir) {
+                if (hil > l[0]) l = [hil, il]
+                il++
+            }
+            continue
+        }
+    }
+}
+
 
 // solve the problem, but get timeout error on large numbers
 const maxArea1 = h => h.reduce((acc, h1, i1) => 
@@ -24,7 +99,7 @@ const maxArea1 = h => h.reduce((acc, h1, i1) =>
 // 51.6 MB
 // Beats
 // 5.57%
-const maxArea = (height = []) => {
+const maxArea3 = (height = []) => {
     const getMax = minHeight => {
         const firstIndex = height.findIndex(h => h >= minHeight)
         let lastIndex
@@ -48,7 +123,43 @@ const maxArea = (height = []) => {
     return globalMax
 }
 
+
 // even slower solution
+// Runtime
+// 379 ms
+// Beats
+// 5.94%
+// Memory
+// 55.3 MB
+// Beats
+// 5%
+const maxArea4 = (height = []) => { 
+    const listL = height.reduce((acc, h, i) => acc.length && acc[acc.length - 1][0] >= h ? acc : [...acc, [h, i]], [])
+    const lastL = listL[listL.length - 1]
+    const listR = []
+    for (let i = height.length - 1; i >= 0; i--) {
+        const h = height[i]
+        if (!listR.length || h > listR[listR.length - 1][0] || h === lastL[0]) listR.push([h, i])
+        if (h === lastL[0]) break
+    }
+
+    const maxL =  listL.reduce((acc, el) => {
+        const higherRight = listR.find(e => e[0] >= el[0])
+        const max = higherRight ? (higherRight[1] - el[1]) * el[0] : 0
+        return Math.max(acc, max)
+    }, 0)
+
+    const maxR =  listR.reduce((acc, el) => {
+        const higherLeft = listL.find(e => e[0] >= el[0])
+        const max = higherLeft ? (el[1] - higherLeft[1]) * el[0] : 0
+        return Math.max(acc, max)
+    }, maxL)
+
+    return Math.max(maxL, maxR)
+}
+
+
+// crazy, but slow
 // Runtime
 // 187 ms
 // Beats
@@ -71,6 +182,7 @@ const maxArea2 = (height = []) => {
         else if (h > acc[1][0][0]) acc[1] = [[h, i]]
         return acc
     }, [[], []])
+    
     const pair = (tallestLines[0].length > 1 ? [tallestLines[0][0], tallestLines[0][tallestLines[0].length - 1]] 
         : tallestLines[1].length === 1 ? tallestLines.flat()
         : [
@@ -132,48 +244,9 @@ const maxArea2 = (height = []) => {
 }
 
 
-// one more slow solution
-// Runtime
-// 379 ms
-// Beats
-// 5.94%
-// Memory
-// 55.3 MB
-// Beats
-// 5%
-const maxArea3 = (height = []) => { 
-    const listL = height.reduce((acc, h, i) => {
-        if (acc.length && acc[acc.length - 1][0] >= h) return acc
-        return [...acc, [h, i]]
-    }, [])
-    const lastL = listL[listL.length - 1]
-    const listR = []
-    for (let i = height.length - 1; i >= 0; i--) {
-        const h = height[i]
-        if (!listR.length || h > listR[listR.length - 1][0] || h === lastL[0]) listR.push([h, i])
-        if (h === lastL[0]) break
-    }
-
-    const maxL =  listL.reduce((acc, el) => {
-        const higherRight = listR.find(e => e[0] >= el[0])
-        const max = higherRight ? (higherRight[1] - el[1]) * el[0] : 0
-        return Math.max(acc, max)
-    }, 0)
-
-    const maxR =  listR.reduce((acc, el) => {
-        const higherLeft = listL.find(e => e[0] >= el[0])
-        const max = higherLeft ? (el[1] - higherLeft[1]) * el[0] : 0
-        return Math.max(acc, max)
-    }, 0)
-
-    return Math.max(maxL, maxR)
-}
-
 console.log(maxArea(height))
 console.log(maxArea(height2))
 console.log(maxArea(height3))
 console.log(maxArea(height4))
 console.log(maxArea(height5))
 console.log(maxArea(height6))
-console.log(maxArea(height7))
-console.log(maxArea(height8))
