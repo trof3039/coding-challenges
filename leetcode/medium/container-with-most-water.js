@@ -148,8 +148,7 @@ const maxArea4 = (height = []) => {
         if (h === lastL[0]) break
     }
 
-    const max = getMax(listL, listR)
-    return Math.max(max, getMax(listR, listL, max))
+    return getMax(listR, listL, getMax(listL, listR))
 }
 
 
