@@ -132,7 +132,13 @@ const maxArea3 = (height = []) => {
 // 55.3 MB
 // Beats
 // 5%
-const maxArea4 = (height = []) => { 
+const maxArea4 = (height = []) => {
+    const getMax = (list1, list2, min = 0) => list1.reduce((acc, el) => {
+        const higherRight = list2.find(e => e[0] >= el[0])
+        const max = higherRight ? (higherRight[1] - el[1]) * el[0] : 0
+        return Math.max(acc, max)
+    }, min)
+
     const listL = height.reduce((acc, h, i) => acc.length && acc[acc.length - 1][0] >= h ? acc : [...acc, [h, i]], [])
     const lastL = listL[listL.length - 1]
     const listR = []
@@ -142,19 +148,8 @@ const maxArea4 = (height = []) => {
         if (h === lastL[0]) break
     }
 
-    const maxL =  listL.reduce((acc, el) => {
-        const higherRight = listR.find(e => e[0] >= el[0])
-        const max = higherRight ? (higherRight[1] - el[1]) * el[0] : 0
-        return Math.max(acc, max)
-    }, 0)
-
-    const maxR =  listR.reduce((acc, el) => {
-        const higherLeft = listL.find(e => e[0] >= el[0])
-        const max = higherLeft ? (el[1] - higherLeft[1]) * el[0] : 0
-        return Math.max(acc, max)
-    }, maxL)
-
-    return Math.max(maxL, maxR)
+    const max = getMax(listL, listR)
+    return Math.max(max, getMax(listR, listL, max))
 }
 
 
