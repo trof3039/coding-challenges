@@ -2,7 +2,10 @@
 
 const n = 7, edges = [[0,1],[0,2],[1,4],[1,5],[2,3],[2,6]], hasApple = [false,false,true,false,true,true,false]
 
-// my solution is the best by performance!
+// My solution has greate performance! 
+// It is better than almost all solutions on leetcode, or even the best solution ever written by a man.
+// Look at the numbers: top 5% of solutions have 121 ms runtime and then next 5% solutions have 122 ms runtime 
+// but my solution has much less. It's because all other top solutions used the DFS algorithm, but my algorithm is more optimal.
 // Runtime
 // 83 ms
 // Beats
