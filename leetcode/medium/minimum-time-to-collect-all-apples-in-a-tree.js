@@ -36,8 +36,33 @@ const minTime = (n, edges, hasApple) => {
 
 console.log(minTime(n, edges, hasApple))
 
+// It is similar to previous solution
+// Runtime 99 ms. Beats 100%.
+// Memory 59.1 MB. Beats 100%.
+const minTime2 = (n, edges, hasApple) => {
+    const increaseResult = i => {
+        const next = nodes[i]
+        if (next === -1) return
+        result++
+        nodes[i] = -1
+        increaseResult(next)
+    }
+    
+    const nodes = {0: -1}
+    for (let i = 0; i < n - 1; i++) {
+        const edge = edges[i]
+        nodes[edge[1]] = edge[0]
+    }
+    
+    let result = 0
+    for (let i = 1; i < n; i++) if (hasApple[i]) increaseResult(i)
 
-// it solves the problem, but isn't valid solution because gets timeout error on large numbers
+    return result * 2
+};
+
+
+// It solves the problem, but isn't valid solution because gets timeout error on large numbers.
+// It's the same solution as previous, but with .reduce() and .forEach() instead of for cycles.
 const minTime1 = (n, edges, hasApple) => {
     const nodes = edges.reduce((acc, node) => ({...acc, [node[1]]: node[0]}), {0: -1})
     let result = 0
