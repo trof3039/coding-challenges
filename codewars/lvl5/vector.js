@@ -31,38 +31,39 @@ function Vector (coords) {
 };
 
 console.log(new Vector([1, 2, 3]).toString())
+
 // SyntaxError: Unexpected identifier "constructor"
-// class Vector {
-//     coords
+class Vector1 {
+    coords
 
-//     constructor(coords) {
-//         this.coords = coords
-//     }
+    constructor(coords) {
+        this.coords = coords
+    }
 
-//     add = (vector) => {
-//         if (vector.coords.length !== this.coords.length) throw new Error()
-//         const newCoords = this.coords.map((v, i) => v + vector.coords[i])
-//         return new Vector(newCoords)
-//     }
+    add = (vector) => {
+        if (vector.coords.length !== this.coords.length) throw new Error()
+        const newCoords = this.coords.map((v, i) => v + vector.coords[i])
+        return new Vector(newCoords)
+    }
 
-//     subtract = (vector) => {
-//         if (vector.coords.length !== this.coords.length) throw new Error()
-//         const newCoords = this.coords.map((v, i) => v - vector.coords[i])
-//         return new Vector(newCoords)
-//     }
+    subtract = (vector) => {
+        if (vector.coords.length !== this.coords.length) throw new Error()
+        const newCoords = this.coords.map((v, i) => v - vector.coords[i])
+        return new Vector(newCoords)
+    }
 
-//     dot = (vector) => {
-//         if (vector.coords.length !== this.coords.length) throw new Error()
-//         return this.coords.reduce((acc, v, i) => acc + v*vector.coords[i], 0)
-//     }
+    dot = (vector) => {
+        if (vector.coords.length !== this.coords.length) throw new Error()
+        return this.coords.reduce((acc, v, i) => acc + v*vector.coords[i], 0)
+    }
 
-//     norm = () => this.coords.reduce((acc, v, i, a) => i === a.length - 1 ? Math.sqrt(acc + v**2) : acc + v**2, 0)
+    norm = () => this.coords.reduce((acc, v, i, a) => i === a.length - 1 ? Math.sqrt(acc + v**2) : acc + v**2, 0)
 
-//     toString = () => `(${this.coords.join()})`
+    toString = () => `(${this.coords.join()})`
 
-//     equals  = (vector) => {
-//         if (vector.coords.length !== this.coords.length) return false
-//         return this.coords.reduce((acc, v, i) => v === vector.coords[i] ? acc : false, true)
-//     }
-// };
+    equals  = (vector) => {
+        if (vector.coords.length !== this.coords.length) return false
+        return this.coords.reduce((acc, v, i) => v === vector.coords[i] ? acc : false, true)
+    }
+};
 

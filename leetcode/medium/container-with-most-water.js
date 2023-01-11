@@ -8,14 +8,8 @@ const height5 = [1,2,4,3]
 const height6 = [1,0,0,0,0,0,0,2,2]
 
 // my fastest solution with difficulty O(n)
-// Runtime
-// 90 ms
-// Beats
-// 67.91%
-// Memory
-// 52.6 MB
-// Beats
-// 5.66%
+// Runtime 90 ms. Beats 67.91%.
+// Memory 52.6 MB. Beats 5.66%.
 const maxArea = (height = []) => {
     let l = [height[0], 0], r = [height[height.length - 1], height.length - 1]
     let il = 1, ir = height.length - 2
@@ -82,14 +76,8 @@ const maxArea1 = h => h.reduce((acc, h1, i1) =>
 
 
 // slow solution 
-// Runtime
-// 138 ms
-// Beats
-// 23.6%
-// Memory
-// 51.6 MB
-// Beats
-// 5.57%
+// Runtime 138 ms. Beats 23.6%.
+// Memory 51.6 MB. Beats 5.57%.
 const maxArea3 = (height = []) => {
     const getMax = minHeight => {
         const firstIndex = height.findIndex(h => h >= minHeight)
@@ -116,14 +104,8 @@ const maxArea3 = (height = []) => {
 
 
 // even slower solution
-// Runtime
-// 379 ms
-// Beats
-// 5.94%
-// Memory
-// 55.3 MB
-// Beats
-// 5%
+// Runtime 379 ms. Beats 5.94%.
+// Memory 55.3 MB. Beats 5%.
 const maxArea4 = (height = []) => {
     const getMax = (list1, list2, min = 0) => list1.reduce((acc, el) => {
         const higherRight = list2.find(e => e[0] >= el[0])
@@ -145,14 +127,8 @@ const maxArea4 = (height = []) => {
 
 
 // crazy, but slow
-// Runtime
-// 187 ms
-// Beats
-// 7.98%
-// Memory
-// 60.2 MB
-// Beats
-// 5.2%
+// Runtime 187 ms. Beats 7.98%.
+// Memory 60.2 MB. Beats 5.2%.
 const maxArea2 = (height = []) => {
     const tallestLines = height.reduce((acc, h, i) => {
         if (!acc[0].length) acc[0].push([h, i])

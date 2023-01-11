@@ -1,14 +1,7 @@
 // https://leetcode.com/problems/gas-station/
 
-// Runtime
-// 78 ms
-// Beats
-// 89.82%
-
-// Memory
-// 50.1 MB
-// Beats
-// 84.11%
+// Runtime 78 ms. Beats 89.82%.
+// Memory 50.1 MB. Beats 84.11%.
 
 const gas = [1,2,3,4,5]
 const cost = [3,4,5,1,2]

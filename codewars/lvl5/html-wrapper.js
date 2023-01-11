@@ -1,6 +1,6 @@
 // https://www.codewars.com/kata/5e98a87ce8255200011ea60f/
 
-// tooooo hard task
+// tooooo hard task (no)
 
 const Format = {
     _stored: [],

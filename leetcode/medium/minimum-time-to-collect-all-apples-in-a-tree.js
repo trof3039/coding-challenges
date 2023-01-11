@@ -2,18 +2,13 @@
 
 const n = 7, edges = [[0,1],[0,2],[1,4],[1,5],[2,3],[2,6]], hasApple = [false,false,true,false,true,true,false]
 
-// My solution has greate performance! 
+// My solution has greate performance!
 // It is better than almost all solutions on leetcode, or even the best solution ever written by a man.
 // Look at the numbers: top 5% of solutions have 121 ms runtime and then next 5% solutions have 122 ms runtime 
-// but my solution has much less. It's because all other top solutions used the DFS algorithm, but my algorithm is more optimal.
-// Runtime
-// 83 ms
-// Beats
-// 100%
-// Memory
-// 60.4 MB
-// Beats
-// 100%
+// but my solution has much less (83 ms). It's because all other top solutions used the DFS algorithm, but my algorithm is more optimal.
+// Runtime 83 ms. Beats 100%.
+// Memory 60.4 MB. Beats 100%.
+
 const minTime = (n, edges, hasApple) => {
     let result = 0
     const nodes = {}
@@ -46,14 +41,14 @@ console.log(minTime(n, edges, hasApple))
 const minTime1 = (n, edges, hasApple) => {
     const nodes = edges.reduce((acc, node) => ({...acc, [node[1]]: node[0]}), {0: -1})
     let result = 0
-    const goToReached = i => {
+    const increaseResult = i => {
         const next = nodes[i]
-        if (nodes[i] === -1) return
+        if (next === -1) return
         result++
         nodes[i] = -1
-        goToReached(next)
+        increaseResult(next)
     }
-    hasApple.forEach((v, i) => {if (v) goToReached(i)})
+    hasApple.forEach((v, i) => {if (v) increaseResult(i)})
 
     return result * 2
 };

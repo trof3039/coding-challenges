@@ -6,14 +6,8 @@ const p2 = [[1,1],[3,2],[3,3],[3,1],[2,3],[1,4]]
 const p3 = [[1,1],[3,2],[4,2],[6,2],[2,3],[1,4]]
 
 // first, not the best (slow) solution
-// Runtime
-// 192 ms
-// Beats
-// 57.39%
-// Memory
-// 65.7 MB
-// Beats
-// 15.65%
+// Runtime 192 ms. Beats 57.39%.
+// Memory 65.7 MB. Beats 15.65%.
 
 const maxPoints = points => {
     if (points.length <= 2) return points.length
@@ -55,14 +49,8 @@ console.log(maxPoints(p2))
 console.log(maxPoints(p3))
 
 // second, better solution
-// Runtime
-// 106 ms
-// Beats
-// 93.91%
-// Memory
-// 42.2 MB
-// Beats
-// 98.26%
+// Runtime 106 ms. Beats 93.91%.
+// Memory 42.2 MB. Beats 98.26%.
 
 const maxPoints1 = points => {
     if (points.length <= 2) return points.length

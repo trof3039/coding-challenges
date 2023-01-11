@@ -1,13 +1,7 @@
 // https://leetcode.com/problems/binary-tree-preorder-traversal
 
-// Runtime
-// 52 ms
-// Beats
-// 98.99%
-// Memory
-// 42.4 MB
-// Beats
-// 29.3%
+// Runtime 52 ms. Beats 98.99%.
+// Memory 42.4 MB. Beats 29.3%.
 
 /**
  * Definition for a binary tree node.
