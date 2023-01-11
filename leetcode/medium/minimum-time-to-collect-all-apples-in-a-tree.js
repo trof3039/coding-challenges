@@ -4,11 +4,11 @@ const n = 7, edges = [[0,1],[0,2],[1,4],[1,5],[2,3],[2,6]], hasApple = [false,fa
 
 // my solution is the best by performance!
 // Runtime
-// 107 ms
+// 83 ms
 // Beats
 // 100%
 // Memory
-// 59.9 MB
+// 60.4 MB
 // Beats
 // 100%
 const minTime = (n, edges, hasApple) => {
@@ -30,9 +30,9 @@ const minTime = (n, edges, hasApple) => {
         } else if (hasApple[edge[0]] && nodes[edge[1]] !== undefined) {
             result++
             increaseResult(edge[1])
-        } else nodes[edge[1]] = edge[0]
+        } else if (nodes[edge[1]] !== undefined) nodes[edge[0]] = edge[1]
+        else nodes[edge[1]] = edge[0]
     }
-
     return result * 2
 };
 
