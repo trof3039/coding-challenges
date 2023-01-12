@@ -1,6 +1,7 @@
 // https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/
 
-const n = 7, edges = [[0,1],[0,2],[1,4],[1,5],[2,3],[2,6]], hasApple = [false,false,true,false,true,true,false]
+// const n = 7, edges = [[0,1],[0,2],[1,4],[1,5],[2,3],[2,6]], hasApple = [false,false,true,false,true,true,false]
+const n = 4, edges = [[0,2],[0,3],[1,2]], hasApple = [false,true,false,false]
 
 // My solution has greate performance!
 // It is better than almost all solutions on leetcode, or even the best solution ever written by a man.
@@ -36,7 +37,39 @@ const minTime = (n, edges, hasApple) => {
 
 console.log(minTime(n, edges, hasApple))
 
-// It is similar to previous solution
+
+// solution using DFS algorithm
+// Runtime 175 ms. Beats 85%.
+// Memory 75.1 MB. Beats 85%.
+const minTime1 = (n, edges, hasApple) => {
+    const adjecency = {}
+    for (let i = 0; i < n - 1; i ++) {
+        const edge = edges[i]
+        adjecency[edge[0]] ? adjecency[edge[0]].push(edge[1]) : adjecency[edge[0]] = [edge[1]]
+        adjecency[edge[1]] ? adjecency[edge[1]].push(edge[0]) : adjecency[edge[1]] = [edge[0]]
+    }
+
+    const dfs = (node, parent) => {
+        let totalTime = 0, childTime = 0
+        const childs = adjecency[node]
+
+        for (let i = 0; i < childs.length; i++) {
+            const child = childs[i]
+
+            if (child === parent) continue;
+
+            childTime = dfs(child, node)
+            if (childTime > 0 || hasApple[child]) totalTime += childTime + 2;
+        }
+
+        return totalTime
+    }
+
+    return dfs(0, -1)
+};
+console.log(minTime1(n, edges, hasApple))
+
+// It is similar to first solution
 // Runtime 99 ms. Beats 100%.
 // Memory 59.1 MB. Beats 100%.
 const minTime2 = (n, edges, hasApple) => {
@@ -51,7 +84,10 @@ const minTime2 = (n, edges, hasApple) => {
     const nodes = {0: -1}
     for (let i = 0; i < n - 1; i++) {
         const edge = edges[i]
-        nodes[edge[1]] = edge[0]
+
+        if (nodes[edge[1]] === undefined) {
+            nodes[edge[1]] = edge[0]
+        } else nodes[edge[0]] = edge[1]
     }
     
     let result = 0
@@ -62,8 +98,8 @@ const minTime2 = (n, edges, hasApple) => {
 
 
 // It solves the problem, but isn't valid solution because gets timeout error on large numbers.
-// It's the same solution as previous, but with .reduce() and .forEach() instead of for cycles.
-const minTime1 = (n, edges, hasApple) => {
+// It's the same solution as previous, but with .reduce() and .forEach() instead of cycles for.
+const minTime3 = (n, edges, hasApple) => {
     const nodes = edges.reduce((acc, node) => ({...acc, [node[1]]: node[0]}), {0: -1})
     let result = 0
     const increaseResult = i => {
