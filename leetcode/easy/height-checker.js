@@ -1,12 +1,12 @@
+// https://leetcode.com/problems/height-checker
+
 const heights = [1,1,4,2,1,3]
 const heights2 = [5,1,2,3,4]
 const heights3 = [2,1,2,1,1,2,2,1]
-// Output: 3
-// Explanation: 
-// heights:  [1,1,4,2,1,3]
-// expected: [1,1,1,2,3,4]
-// Indices 2, 4, and 5 do not match
 
+// slow solution
+// Runtime 116 ms. Beats 11.15%.
+// Memory 44.4 MB. Beats 12.3%.
 const heightChecker = heights => {
     const groups = heights.reduce(
         (acc, v, i) => {

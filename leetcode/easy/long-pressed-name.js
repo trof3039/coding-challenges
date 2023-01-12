@@ -1,14 +1,10 @@
-// Input: name = "alex", typed = "aaleex"
-// Output: true
-// Explanation: 'a' and 'e' in 'alex' were long pressed.
+// https://leetcode.com/problems/long-pressed-name/description
+
 const name = "alex"
 const typed = "aaleex"
-// const name = "alex"
-// const typed = "aaleexa"
-// const name = "alexd"
-// const typed = "ale"
-// const name = "saeed"
-// const typed = "ssaaedd"
+
+// Runtime 69 ms. Beats 74.57%.
+// Memory 44 MB. Beats 19.8%.
 const isLongPressedName = (name, typed) => {
     const getLetterGroups = string => string.split('').reduce(
         (acc, l, i, arr) => {
