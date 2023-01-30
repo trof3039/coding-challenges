@@ -22,5 +22,14 @@ const tribonacci = n => {
     return prev3
 };
 
+// Runtime 63 ms Beats 71.15%.
+// Memory 41.4 MB Beats 87.72%.
+const cache = [0, 1, 1]
+const tribonacci1 = n => {
+    if (cache[n] === undefined) {
+        cache[n] = tribonacci1(n - 3) + tribonacci1(n - 2) + tribonacci1(n - 1);
+    }
 
+    return cache[n];
+};
 console.log(tribonacci(25))
