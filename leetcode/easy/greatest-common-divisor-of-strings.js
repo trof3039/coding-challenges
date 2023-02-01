@@ -1,11 +1,16 @@
 // https://leetcode.com/problems/greatest-common-divisor-of-strings/
 
 // good solution
+// Runtime 64 ms Beats 85.42%.
+// Memory 41.9 MB Beats 92.71%.
+// or if we remove line 13 (check for str1 + str2 !== str2 + str1), result will be
 // Runtime 59 ms Beats 94.79%.
 // Memory 42.4 MB Beats 59.38%.
+
 const gcdOfStrings = (str1, str2) => {
     if (str1.length === str2.length) return str1 === str2 ? str1 : ''
     if (str1.length === 0 || str2.length === 0) return ''
+    if (str1 + str2 !== str2 + str1) return ''
 
     const primeFactorized = num => {
         const primeDivisors = {}
