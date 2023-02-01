@@ -42,6 +42,18 @@ const gcdOfStrings = (str1, str2) => {
     return expectedStr1 === str1 && expectedStr2 === str2 ? str1.slice(0, maxDivisor) : ''
 };
 
+
+// another good solution
+// Runtime 57 ms Beats 94.79%.
+// Memory 41.8 MB Beats 92.71%.
+const gcdOfStrings1 = (str1, str2) => {
+    if (str1.length === 0 || str2.length === 0) return ''
+    if (str1 + str2 !== str2 + str1) return ''
+
+    const gcd = (a, b) => (0 === b ? a : gcd(b, a % b))
+    return str1.slice(0, gcd(str1.length, str2.length))
+};
+
 // const str1 = "ABCABC", str2 = "ABC"
 // const str1 = "ABABAB", str2 = "ABAB"
 // const str1 = "LEET", str2 = "CODE"
