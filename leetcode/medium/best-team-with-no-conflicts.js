@@ -1,8 +1,8 @@
 // https://leetcode.com/problems/best-team-with-no-conflicts/
 
 // slow solution
-// Runtime 5417 ms Beats 11.11%.
-// Memory 61.5 MB Beats 11.11%.
+// Runtime 5417 ms. Beats 11.11%.
+// Memory 61.5 MB. Beats 11.11%.
 const bestTeamScore = (scores, ages) => {
   const scoresByAge = {}
   let maxAge = 0
