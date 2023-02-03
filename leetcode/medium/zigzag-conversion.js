@@ -11,9 +11,8 @@ const convert = (s, numRows) => {
     let row = 0
     for (let i = 0; i < s.length; i++) {
         rows[row].push(s[i])
-        if (row === 0) row = 1, moveDown = true
-        else if (row === rows.length - 1) row = rows.length - 2, moveDown = false
-        else if (moveDown) row++
+        if (row === 0 || row === rows.length - 1) moveDown = row === 0
+        if (moveDown) row++
         else row--
     }
     return rows.flat().join('')
