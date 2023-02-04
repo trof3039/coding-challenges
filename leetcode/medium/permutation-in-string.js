@@ -8,9 +8,11 @@ const checkInclusion = (s1, s2) => {
     for (let i = 0; i < s2.length; i++) {
         const letterToInclude = s2[i]
         const letterToExclude = s2[i - s1.length]
+        
         if (letterToExclude && letterToInclude === letterToExclude) continue
         
         const toIncludeCount = letters[letterToInclude]
+
         if (toIncludeCount === 1) delete letters[letterToInclude]
         else letters[letterToInclude] = (toIncludeCount || 0) - 1
 
@@ -19,7 +21,6 @@ const checkInclusion = (s1, s2) => {
             
             if (toExcludeCount === -1) delete letters[letterToExclude]
             else letters[letterToExclude] = (toExcludeCount || 0) + 1
-    
         }
 
         if (i >= s1.length - 1 && Object.keys(letters).length === 0) return true 
