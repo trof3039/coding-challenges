@@ -34,7 +34,7 @@ const totalFruit = fruits => {
     return Math.max(max, currentMax)
 };
 
-// refactored solution. it looks clearer but is a bit slower
+// refactored solution. it looks clearer but a bit slower
 // Runtime 89 ms. Beats 93.67%.
 // Memory 48.7 MB. Beats 95.18%.
 const totalFruit1 = fruits => {
