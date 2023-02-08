@@ -34,9 +34,9 @@ const totalFruit = fruits => {
     return Math.max(max, currentMax)
 };
 
-// refactored and slower for some reason
-// Runtime 89 ms. Beats 92.76%. 
-// Memory 48.7 MB. Beats 98.59%.
+// refactored solution. it looks clearer but is a little bit slower
+// Runtime 89 ms. Beats 93.67%.
+// Memory 48.7 MB. Beats 95.18%.
 const totalFruit1 = fruits => {
     const totalTrees = fruits.length
     if (totalTrees <= 2) return totalTrees
@@ -51,24 +51,17 @@ const totalFruit1 = fruits => {
         if (max >= currentMax + totalTrees - i) break
 
         const currF = fruits[i]
-
-        if (currF === currF1 || currF === currF2) {
-            if (currF === currF1) {
-                currF1 = currF2
-                currF2 = currF
-                lastF1Index = i - 1
+        if (currF === currF1 || currF === currF2) currentMax++
+        if (currF !== currF2) {
+            if (currF !== currF1) {
+                max = Math.max(max, currentMax)
+                currentMax = i - lastF1Index
             }
-
-            currentMax++
-        } else {
-            max = Math.max(max, currentMax)
-            currentMax = i - lastF1Index
             currF1 = currF2
             currF2 = currF
             lastF1Index = i - 1
         }
     }
-    
     return Math.max(max, currentMax)
 };
 
