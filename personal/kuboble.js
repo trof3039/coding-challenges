@@ -146,10 +146,10 @@ class Solver {
         )
     }
 
-    getSolutions(maxSteps = 1) {
+    getSolutions(maxSteps) {
         let solutions = [new Solution([], this.startingPosition, this.field)]
         
-        for (let i = 1; i <= maxSteps; i++) solutions = this.getNextStepSolutions(solutions)
+        for (let i = 0; i < maxSteps; i++) solutions = this.getNextStepSolutions(solutions)
         
         return solutions.filter(solution => solution.isFinal).map(solution => solution.moves)
     }
@@ -189,7 +189,7 @@ const convertSolution = (solution, startingPosition, level) => {
     let currOrange = startingPosition[1]
     let currBlue = startingPosition[2]
 
-    let text = `Level ${level}. Solution in step${solution.length > 1 ? 's' : ''}.`
+    let text = `Level ${level}. Solution in ${solution.length} step${solution.length > 1 ? 's' : ''}.`
     solution.forEach(([start, end], index) => {
         let color
         if (currGreen[0] === start[0] && currGreen[1] === start[1]) color = 'GREEN ', currGreen = end
