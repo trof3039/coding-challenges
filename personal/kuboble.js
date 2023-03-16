@@ -108,7 +108,6 @@ class Solver {
         this.startingPosition = startingPosition
         this.endingPosition = endingPosition
         this.reachedPositions = [{position: startingPosition, step: 0}]
-        this.solutions = null
     }
 
     getPosition(position) {
@@ -116,15 +115,14 @@ class Solver {
             if (acc) return acc
 
             const hasDifference = reached.position.some((ball, index) => position[index][0] !== ball[0] || position[index][1] !== ball[1])
-            
-            return hasDifference ? reached.position : null
+
+            return !hasDifference ? reached.position : null
         }, null)
     }
 
     addPosition(position, step) {
         this.reachedPositions.push({position, step})
     }
-
     getNextStepSolutions(solutions) {
         return solutions.reduce(
             (acc, solution) => {
@@ -137,8 +135,8 @@ class Solver {
                     sol.finalize(this.endingPosition)
                     const existingPosition = this.getPosition(sol.position)
 
-                    if (existingPosition && existingPosition.step <= sol.moves.length) return null
-                    else if (!existingPosition) this.addPosition(sol.position, sol.moves.length)
+                    if (existingPosition) return null
+                    else this.addPosition(sol.position, sol.moves.length)
 
                     return sol
                 })
@@ -149,28 +147,33 @@ class Solver {
     }
 
     getSolutions(maxSteps = 1) {
-        this.solutions = [new Solution([], this.startingPosition, this.field)]
+        let solutions = [new Solution([], this.startingPosition, this.field)]
         
-        for (let i = 1; i <= maxSteps; i++) this.solutions = this.getNextStepSolutions(this.solutions)
-
-        return this.solutions.filter(solution => solution.isFinal).map(solution => solution.moves)
+        for (let i = 1; i <= maxSteps; i++) solutions = this.getNextStepSolutions(solutions)
+        
+        return solutions.filter(solution => solution.isFinal).map(solution => solution.moves)
     }
 }
 
 const decodeInput = string => {
+    const validSymbolds = ['A', 'a', 'B', 'b', 'C', 'c', 'X', '.'];
     [,,, maxSteps, rawBoard] = string.trim().split(',')
     const board = rawBoard.trim().split(';')
     const startingPosition = []
     const endingPosition = []
     const field = board.map((rawLine, y) => rawLine.trim().split(' ').map((sym, x) => {
-        if (sym === 'A') startingPosition[0] = [y, x]
-        if (sym === 'a') endingPosition[0] = [y, x]
-        if (sym === 'B') startingPosition[1] = [y, x]
-        if (sym === 'b') endingPosition[1] = [y, x]
-        if (sym === 'C') startingPosition[2] = [y, x]
-        if (sym === 'c') endingPosition[2] = [y, x]
+        if (sym === 'A' || sym[0] === 'A' || sym[1] === 'A') startingPosition[0] = [y, x]
+        if (sym === 'a' || sym[0] === 'a' || sym[1] === 'a') endingPosition[0] = [y, x]
+        if (sym === 'B' || sym[0] === 'B' || sym[1] === 'B') startingPosition[1] = [y, x]
+        if (sym === 'b' || sym[0] === 'b' || sym[1] === 'b') endingPosition[1] = [y, x]
+        if (sym === 'C' || sym[0] === 'C' || sym[1] === 'C') startingPosition[2] = [y, x]
+        if (sym === 'c' || sym[0] === 'c' || sym[1] === 'c') endingPosition[2] = [y, x]
 
-        if (!['A', 'a', 'B', 'b', 'C', 'c', 'X', '.'].includes(sym)) throw new Error(`Invalid input. Unknown symbol <${sym}>.`)
+        if (
+            sym.length === 1 && !validSymbolds.includes(sym)
+            ||
+            sym.length === 2 && (!validSymbolds.includes(sym[0]) || !validSymbolds.includes(sym[1]))
+        ) throw new Error(`Invalid input. Unknown symbol <${sym}>.`)
 
         return sym !== 'X'
     }))
@@ -186,7 +189,7 @@ const convertSolution = (solution, startingPosition, level) => {
     let currOrange = startingPosition[1]
     let currBlue = startingPosition[2]
 
-    let text = `Solution for ${level} level by ${solution.length} steps.`
+    let text = `Solution for the level ${level} by ${solution.length} step${solution.length > 1 ? 's' : ''}.`
     solution.forEach(([start, end], index) => {
         let color
         if (currGreen[0] === start[0] && currGreen[1] === start[1]) color = 'green', currGreen = end
@@ -497,4 +500,4 @@ const getBestSolution = (level) => {
     return convertSolution(solver.getSolutions(maxSteps)[0], startingPosition, level)
 }
 
-console.log(getBestSolution(5))
+console.log(getBestSolution(40))
