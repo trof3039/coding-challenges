@@ -189,18 +189,18 @@ const convertSolution = (solution, startingPosition, level) => {
     let currOrange = startingPosition[1]
     let currBlue = startingPosition[2]
 
-    let text = `Solution for the level ${level} by ${solution.length} step${solution.length > 1 ? 's' : ''}.`
+    let text = `Level ${level}. Solution in step${solution.length > 1 ? 's' : ''}.`
     solution.forEach(([start, end], index) => {
         let color
-        if (currGreen[0] === start[0] && currGreen[1] === start[1]) color = 'green', currGreen = end
-        if (currOrange[0] === start[0] && currOrange[1] === start[1]) color = 'orange', currOrange = end
-        if (currBlue && currBlue[0] === start[0] && currBlue[1] === start[1]) color = 'blue', currBlue = end
+        if (currGreen[0] === start[0] && currGreen[1] === start[1]) color = 'GREEN ', currGreen = end
+        if (currOrange[0] === start[0] && currOrange[1] === start[1]) color = 'ORANGE', currOrange = end
+        if (currBlue && currBlue[0] === start[0] && currBlue[1] === start[1]) color = 'BLUE  ', currBlue = end
 
         let direction
-        if (start[0] === end[0]) direction = start[1] > end[1] ? 'left' : 'right'
-        if (start[1] === end[1]) direction = start[0] > end[0] ? 'up' : 'down'
+        if (start[0] === end[0]) direction = start[1] > end[1] ? '←←← LEFT' : '→→→ RIGHT'
+        if (start[1] === end[1]) direction = start[0] > end[0] ? '↑↑↑ UP' : '↓↓↓ DOWN'
 
-        text = text.concat(`\nStep ${index + 1}: move ${color} ${direction}`)
+        text = text.concat(`\nStep ${index + 1}: ${color} ${direction}`)
     })
     return text
 }
